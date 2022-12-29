@@ -22,4 +22,15 @@ router.post(
   }
 );
 
+// router.post(
+//   "/api/auth/login",
+//   async (request: Request, response: Response, next: NextFunction) => {
+//     try {
+//       UserAuth.loginUser(request, response);
+//     } catch (err: any) {
+//       next(err);
+//     }
+//   }
+// );
+
 export default router;

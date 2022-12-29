@@ -1,4 +1,3 @@
-
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import config from "./2-utils/config";
@@ -15,12 +14,12 @@ server.use("/api", controller);
 server.use('/api/auth', authController)
 
 server.use("*", (request: Request, response: Response, next: NextFunction) => {
-    next(new RouteNotFoundError(request.method, request.originalUrl));
+  next(new RouteNotFoundError(request.method, request.originalUrl));
 });
 
 server.use(catchAll);
 
 server.listen(config.port, () => {
-    dal.connect()
-    console.log(`Listening on http://localhost:${config.port}`)
+  dal.connect();
+  console.log(`Listening on http://localhost:${config.port}`);
 });
