@@ -20,15 +20,16 @@ router.post(
   }
 );
 
-// router.post(
-//   "/api/auth/login",
-//   async (request: Request, response: Response, next: NextFunction) => {
-//     try {
-//       UserAuth.loginUser(request, response);
-//     } catch (err: any) {
-//       next(err);
-//     }
-//   }
-// );
+router.post(
+  "/login",
+  async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      const { password, username } = request.body;
+      await UserAuth.loginUser(request, response);
+    } catch (err: any) {
+      next(err);
+    }
+  }
+);
 
 export default router;
