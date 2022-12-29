@@ -10,7 +10,6 @@ export default class UserAuth {
     if (!password) throw new ValidationError("Please set your password");
 
     const hashedPassword = await encrypt(password);
-    console.log("<<<<<<<<<<<<<<<<<<<<<", hashedPassword);
     const newUser = {
       username: username,
       password: hashedPassword,
@@ -26,32 +25,21 @@ export default class UserAuth {
     return response.status(201).json(token);
   }
 
-  // public static async loginUser(request: any, response: any) {
-  //   const { username, password, email, linkedinProfile, phone } = request.body;
+  public static async loginUser(request: any, response: any) {
+    const { password, username } = request.body;
 
-  // let user
-  // const result = await UserModel.findOne({ email: email })
-  //   // if no user then send back an error message
-  //   // .then(handle404)
+    if (!(username && password)) {
+      response.status(400).send("All input is required");
+    }
 
-  //     user = result
+    const user = await UserModel.findOne({ username });
+    const authenticated = await bcrypt.compare(password, user.password);
 
-  //     const correctPassword = await bcrypt.compare(password, user.hashedPassword)
+    if (user && authenticated) {
+      const token = createNewToken(user.toObject());
 
-  //     if (correctPassword) {
-
-  //       const token = crypto.randomBytes(16).toString('hex')
-  //       // add token to user
-  //       user.token = token
-  //       // save user
-  //       return user.save()
-  //     // else then throw error
-  //     } else {
-  //       throw new BadCredentialsError()
-  //     }
-
-  //   // respond with user and the token
-  //   .then(user => {
-  //     res.status(201).json({ user: user.toObject() })
-  // }
+      return response.status(200).json(token);
+    }
+    return response.status(400).send("Invalid Credentials");
+  }
 }
