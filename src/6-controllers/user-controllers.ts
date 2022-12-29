@@ -14,6 +14,8 @@ router.post(
   "/auth/register",
   async (request: Request, response: Response, next: NextFunction) => {
     try {
+      //   console.log("<<<<<<<<<<<<<<", request);
+
       UserAuth.registerUser(request, response);
     } catch (err: any) {
       next(err);

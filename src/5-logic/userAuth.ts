@@ -2,20 +2,15 @@
 import { ValidationError } from "../4-models/error-models";
 import { UserModel } from "../4-models/user-model";
 import bcrypt from "bcrypt";
+import { createNewToken, encrypt } from "../2-utils/functions";
 export default class UserAuth {
   public static async registerUser(request: any, response: any) {
     const { username, password, email, linkedinProfile, phone } = request.body;
-    !password && new ValidationError("Please set your password");
 
-    const hashedPassword = await new Promise((resolve, reject) => {
-      bcrypt.hash(password, 10, function (err: any, hash: string) {
-        if (err) {
-          reject({ error: err });
-        } else {
-          resolve(hash);
-        }
-      });
-    });
+    if (!password) throw new ValidationError("Please set your password");
+
+    const hashedPassword = await encrypt(password);
+    console.log("<<<<<<<<<<<<<<<<<<<<<", hashedPassword);
     const newUser = {
       username: username,
       password: hashedPassword,
@@ -26,7 +21,9 @@ export default class UserAuth {
 
     const user = await UserModel.create(newUser);
 
-    return response.status(201).json({ user: user.toObject() });
+    const token = createNewToken(user.toObject());
+
+    return response.status(201).json(token);
   }
 
   // public static async loginUser(request: any, response: any) {
