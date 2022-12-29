@@ -6,12 +6,13 @@ import catchAll from "./3-middleware/catch-all";
 import { RouteNotFoundError } from "./4-models/error-models";
 import dal from "./2-utils/dal";
 import controller from "./6-controllers/controllers";
-
+import authController from './6-controllers/user-controllers'
 const server = express();
 
 server.use(cors());
 server.use(express.json());
 server.use("/api", controller);
+server.use('/api/auth', authController)
 
 server.use("*", (request: Request, response: Response, next: NextFunction) => {
     next(new RouteNotFoundError(request.method, request.originalUrl));
