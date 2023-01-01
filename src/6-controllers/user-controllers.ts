@@ -32,4 +32,24 @@ router.post(
   }
 );
 
+router.post(
+  "/is-exist-user",
+  async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      await UserAuth.isExsist(request, response);
+    } catch (err: any) {
+      next(err);
+    }
+  }
+);
+
+router.post('/change-password',   
+async (request: Request, response: Response, next: NextFunction) => {
+    try {
+      await UserAuth.changePassword(request, response);
+    } catch (err: any) {
+      next(err);
+    }
+  }
+)
 export default router;
