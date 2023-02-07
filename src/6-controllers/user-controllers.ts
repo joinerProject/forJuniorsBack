@@ -24,7 +24,7 @@ router.post(
   "/login",
   async (request: Request, response: Response, next: NextFunction) => {
     try {
-      const { password, username } = request.body;
+      // const { password, username } = request.body;
       await UserAuth.loginUser(request, response);
     } catch (err: any) {
       next(err);
@@ -43,13 +43,14 @@ router.post(
   }
 );
 
-router.post('/change-password',   
-async (request: Request, response: Response, next: NextFunction) => {
+router.post(
+  "/change-password",
+  async (request: Request, response: Response, next: NextFunction) => {
     try {
       await UserAuth.changePassword(request, response);
     } catch (err: any) {
       next(err);
     }
   }
-)
+);
 export default router;
