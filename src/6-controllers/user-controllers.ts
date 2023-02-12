@@ -13,7 +13,7 @@ router.post(
   "/register",
   async (request: Request, response: Response, next: NextFunction) => {
     try {
-      UserAuth.registerUser(request, response);
+      UserAuth.registerUser(request, response, next);
     } catch (err: any) {
       next(err);
     }

@@ -3,13 +3,18 @@ import { UnauthorizedError, ValidationError } from "../4-models/error-models";
 import { UserModel } from "../4-models/user-model";
 import bcrypt from "bcrypt";
 import { createNewToken, encrypt } from "../2-utils/functions";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+import { validateUniqueFields } from "./formValidation";
 export default class UserAuth {
-  public static async registerUser(request: any, response: any) {
+  public static async registerUser(
+    request: any,
+    response: any,
+    next: NextFunction
+  ) {
     const { username, password, email, linkedinProfile, phone } = request.body;
-    //add validation for duplicare username
-    if (!password) throw new ValidationError("Please set your password");
     try {
+      validateUniqueFields(username, email, linkedinProfile, next);
+
       const hashedPassword = await encrypt(password);
       const newUser = {
         username: username,
@@ -25,7 +30,7 @@ export default class UserAuth {
 
       return response.status(201).json(token);
     } catch (e) {
-      console.log(e);
+      next(e);
     }
   }
 
@@ -34,7 +39,7 @@ export default class UserAuth {
     const { password, username } = request.body;
 
     if (!(username && password)) {
-      response.status(400).send("All input is required");
+      return response.status(400).send("All input is required");
     }
 
     const user = await UserModel.findOne({ username });

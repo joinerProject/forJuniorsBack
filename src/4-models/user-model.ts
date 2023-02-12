@@ -1,25 +1,4 @@
-import mongoose from 'mongoose';
-
-// class User {
-//   public name: string;
-//   public userName: string;
-//   public password: string;
-//   public email: string;
-//   public linkedinProfile: string;
-//   public constructor(
-//     name: string,
-//     userName: string,
-//     password: string,
-//     email: string,
-//     linkedinProfile: string
-//   ) {
-//     this.name = name;
-//     this.userName = userName;
-//     this.password = password;
-//     this.email = email;
-//     this.linkedinProfile = linkedinProfile;
-//   }
-// }
+import mongoose from "mongoose";
 
 export interface IUserModel extends mongoose.Document {
   username: string;

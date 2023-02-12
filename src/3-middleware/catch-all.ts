@@ -1,13 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 
-async function catchAll(err: any, request: Request, response: Response, next: NextFunction) {
+async function catchAll(
+  err: any,
+  request: Request,
+  response: Response,
+  next: NextFunction
+) {
+  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!in middleware", err);
 
-    console.log(err);
-    
-    const status = err.status || 500;
-    const message = err.message || "Unknown Error";
+  const status = err.status || 500;
+  const message = err.message || "Unknown Error";
 
-    response.status(status).send(message);
+  response.status(status).send(message);
 }
 
 export default catchAll;
